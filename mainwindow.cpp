@@ -1,4 +1,4 @@
-/* Stone Pagamentos S.A Browser for Mamba application development
+/* Stone Payments Browser for Mamba application development
     Copyright (C) <2018>
     Author: Luciano Santos - lvsantos@stone.com.br
 
