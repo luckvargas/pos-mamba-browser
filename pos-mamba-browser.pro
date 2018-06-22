@@ -8,7 +8,7 @@ QT       += core gui webkit network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets  webkitwidgets
 
-TARGET = pos-mamba-browser
+TARGET = MambaWebBrowser
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -32,8 +32,3 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
