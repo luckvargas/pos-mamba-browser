@@ -39,3 +39,6 @@ after_success:
 branches:
   except:
     - /^(?i:continuous)$/
+
+notifications:
+  slack: stonepagamentos-pos:tCXxovWRV2dZUDxo7XwFThQv
