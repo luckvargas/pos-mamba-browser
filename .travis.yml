@@ -1,0 +1,41 @@
+language: cpp
+sudo: require
+dist: trusty
+
+env:
+  global:
+    - BIN=MambaWebBrowser
+os:
+  - linux
+matrix:
+  exclude:
+  - os: linux
+    compiler: clang
+
+install:
+- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then 
+    sudo add-apt-repository ppa:beineri/opt-qt487-trusty -y;
+    sudo apt update -qq; sudo apt install opt-qt4-dev-tools -y; 
+  fi
+script:
+- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then 
+    source /opt/qt*/bin/qt*-env.sh;
+    qmake DESTDIR=deploy pos-mamba-browser.pro;
+    make; 
+    wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
+    chmod a+x linuxdeployqt*.AppImage;
+    unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
+    ./linuxdeployqt*.AppImage deploy/$BIN -verbose=2 -bundle-non-qt-libs -appimage;
+    export ARTIFACT="$BIN"-x86_64.AppImage;
+    mv Application-x86_64.AppImage $ARTIFACT;
+    find . | grep AppImage;
+  fi
+after_success:
+- wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh;
+- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then 
+    find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq;
+    bash ./upload.sh $ARTIFACT;
+  fi
+branches:
+  except:
+    - /^(?i:continuous)$/
