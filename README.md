@@ -8,7 +8,7 @@ OS   | Build Status
 
 PosMambaBrowser is a desktop web browser based on QtWebkit version 4.9.4, from Qt 4.8.7. The main purpose of this project is offer Mamba developers a desktop browser with the same capabilities of Stone Payments' Point of Sales (POS).
 
-This project is under [LGPL-2.0], for more information read ![COPYING.TXT](COPYING.TXT).
+This project is under [LGPL-2.0], for more information read [COPYING.TXT](COPYING.TXT).
 
 # Building and Running
 The binaries of last supported versions of pos-mamba-browser can be found on [release section].
