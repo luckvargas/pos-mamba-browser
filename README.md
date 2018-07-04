@@ -3,7 +3,7 @@
 OS   | Build Status
 :---:|:----:
 **Linux** | [![Build Status](https://travis-ci.org/stone-payments/pos-mamba-browser.svg?branch=master)](https://travis-ci.org/stone-payments/pos-mamba-browser/branches)
-
+**Windows** | [![Build status](https://ci.appveyor.com/api/projects/status/jtjlqkaqhtorj8au/branch/master?svg=true)](https://ci.appveyor.com/project/luckvargas/pos-mamba-browser/branch/master)
 # Getting Started
 
 PosMambaBrowser is a desktop web browser based on QtWebkit version 4.9.4, from Qt 4.8.7. The main purpose of this project is offer Mamba developers a desktop browser with the same capabilities of Stone Payments' Point of Sales (POS).

@@ -1,0 +1,78 @@
+version: '{branch}-{build}'
+
+os: Visual Studio 2015
+
+init:
+  # Create our AppVeyor version
+  - ps: $env:commit = $env:appveyor_repo_commit.SubString(0,7)
+  - ps: Update-AppveyorBuild -Version ("{0}-{1}-{2}" -f $env:appveyor_repo_branch,$env:appveyor_build_number,$env:commit )
+
+environment:
+  matrix:
+    - arch: x86
+      compiler: msvc2010
+      backend: vs2010
+
+platform:
+  - x64
+
+configuration:  
+  - release
+  - debug
+
+cache:
+  - C:\Qt\4.8.7 -> .appveyor.yml
+ 
+install:
+  # dependencies
+  - choco install curl 7zip 
+  - mkdir extern
+  - cd extern
+
+  #setup environment
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" %arch%
+  - set make=nmake.exe
+  - IF NOT EXIST "C:\Qt\4.8.7" (curl https://www.dropbox.com/s/d01tdjhs59jg5ak/qt487_msvs2010.zip?dl=1 -O -J -L)
+  - IF NOT EXIST "C:\Qt\4.8.7" (7z x qt487_msvs2010.zip > nul)
+  - IF NOT EXIST "C:\Qt\4.8.7" (move Qt\4.8.7 C:\Qt\)
+  - cd C:\Qt\4.8.7
+  - set "QTDIR=%cd%"
+  - set "PATH=%QTDIR%\bin;%PATH%"
+  
+before_build:
+  # Prepare the out-of-source build directory.
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - mkdir %APPVEYOR_BUILD_FOLDER%-build
+  - qmake -spec win32-msvc2010 -o %APPVEYOR_BUILD_FOLDER%-build -r -Wall -Wlogic -Wparser CONFIG+=%CONFIGURATION% %APPVEYOR_BUILD_FOLDER%
+  
+build_script:
+  # Compile it and check for .exe
+  - cd %APPVEYOR_BUILD_FOLDER%-build
+  - '%make%'
+  - dir /b /s *.exe
+
+after_build:
+  - set BIN=MambaWebBrowser
+  - dir /b /s *.exe
+  - mkdir deploy
+  - copy %APPVEYOR_BUILD_FOLDER%-build\%CONFIGURATION%\%BIN%.exe deploy\%BIN%.exe
+  - copy %QTDIR%\bin\QtCore4.dll deploy\
+  - copy %QTDIR%\bin\QtGui4.dll deploy\
+  - copy %QTDIR%\bin\QtNetwork4.dll deploy\
+  - copy %QTDIR%\bin\QtWebKit4.dll deploy\
+  - 7z a -tzip %BIN%_%CONFIGURATION%.zip .\deploy\* -r
+  - copy %APPVEYOR_BUILD_FOLDER%-build\%BIN%_%CONFIGURATION%.zip %APPVEYOR_BUILD_FOLDER%\%BIN%_%CONFIGURATION%.zip
+  - dir /b /s *.zip
+
+artifacts:
+  - path: '%BIN%_%CONFIGURATION%.zip'
+    name: '%BIN%'
+
+deploy:
+  - provider: GitHub
+    release: continuous
+    artifact: '%BIN%'
+    draft: false
+    prerelease: true
+    auth_token:
+      secure: p0RIEM3bMprm7t6GO2CdzBNAbItuPEYKWbvMFiHss/pP7MvlifDyVP2UMcIPrpc+
