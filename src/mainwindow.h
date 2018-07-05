@@ -21,6 +21,8 @@ class QUrl;
 class QWebView;
 class QLineEdit;
 
+static const QSize defaultSize = QSize(240, 300);
+
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
@@ -41,6 +43,4 @@ private:
   QLineEdit* m_addressBar;
   QWebView* m_webview;
   int m_loadProgress;
-
-  const QSize defaultSize = QSize(240, 300);
 };
