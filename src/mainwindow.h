@@ -33,6 +33,7 @@ private slots:
   void finishLoading(bool);
   void adjustTitle();
   void changeLocation();
+  void adjustLocation();
 
 private:
   void setupUi();
@@ -40,4 +41,6 @@ private:
   QLineEdit* m_addressBar;
   QWebView* m_webview;
   int m_loadProgress;
+
+  const QSize defaultSize = QSize(240, 300);
 };
