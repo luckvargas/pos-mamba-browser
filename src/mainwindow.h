@@ -19,6 +19,7 @@
 
 class QUrl;
 class QWebView;
+class QLineEdit;
 
 class MainWindow : public QMainWindow
 {
@@ -27,12 +28,16 @@ class MainWindow : public QMainWindow
 public:
   MainWindow(const QUrl& url);
 
-protected slots:
+private slots:
   void setProgress(int p);
   void finishLoading(bool);
   void adjustTitle();
+  void changeLocation();
 
 private:
+  void setupUi();
+
+  QLineEdit* m_addressBar;
   QWebView* m_webview;
   int m_loadProgress;
 };

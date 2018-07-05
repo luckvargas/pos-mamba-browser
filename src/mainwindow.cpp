@@ -16,6 +16,8 @@
 
 #include "mainwindow.h"
 #include <QLayout>
+#include <QLineEdit>
+#include <QToolBar>
 #include <QtWebKit>
 
 MainWindow::MainWindow(const QUrl& url)
@@ -23,12 +25,38 @@ MainWindow::MainWindow(const QUrl& url)
 
   m_webview = new QWebView(this);
 
+  setupUi();
   connect(m_webview, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
   connect(m_webview, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
 
-  setCentralWidget(m_webview);
   m_webview->load(url);
+}
+
+void
+MainWindow::setupUi()
+{
+  m_addressBar = new QLineEdit(this);
+  m_addressBar->setSizePolicy(QSizePolicy::Expanding,
+                              m_addressBar->sizePolicy().verticalPolicy());
+  connect(m_addressBar, SIGNAL(returnPressed()), SLOT(changeLocation()));
+
+  QToolBar* toolBar = addToolBar(tr("Navigation"));
+  toolBar->addAction(m_webview->pageAction(QWebPage::Back));
+  toolBar->addAction(m_webview->pageAction(QWebPage::Forward));
+  toolBar->addAction(m_webview->pageAction(QWebPage::Reload));
+  toolBar->addAction(m_webview->pageAction(QWebPage::Stop));
+  toolBar->addWidget(m_addressBar);
+
+  setCentralWidget(m_webview);
+}
+
+void
+MainWindow::changeLocation()
+{
+  QUrl url = QUrl(m_addressBar->text());
+  m_webview->load(url);
+  m_webview->setFocus();
 }
 
 void
