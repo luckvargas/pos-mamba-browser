@@ -15,14 +15,21 @@
 */
 
 #include "mainwindow.h"
+#include <QScreen>
 #include <QtGui>
 int
 main(int argc, char* argv[])
 {
+  { // Environment variables to run on embedded linux
+    qputenv("QWS_MOUSE_PROTO", "linuxinput:/dev/input/event2");
+    qputenv("QWS_KEYBOARD", "linuxinput:/dev/input/event0");
+    qputenv("QWS_DISPLAY", "Transformed:Rot270:LinuxFb:/dev/graphics/fb0");
+  }
 
   QApplication app(argc, argv);
-  QUrl url;
 
+  // Setup initialization url
+  QUrl url;
   if (argc > 1) {
     url = QUrl(argv[1]);
   } else {
@@ -30,7 +37,15 @@ main(int argc, char* argv[])
   }
 
   MainWindow* browser = new MainWindow(url);
-  browser->show();
+
+  QRect rec = QApplication::desktop()->screenGeometry();
+  if (rec.height() < browser->size().rheight()) {
+    // embedded devices
+    browser->showFullScreen();
+  } else {
+    // desktop
+    browser->show();
+  }
 
   return app.exec();
 }

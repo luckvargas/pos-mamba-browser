@@ -32,3 +32,7 @@ HEADERS += \
 
 FORMS += \
         src/mainwindow.ui
+
+
+target.path = $$DESTDIR
+INSTALLS += target
