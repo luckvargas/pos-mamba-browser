@@ -33,6 +33,10 @@ MainWindow::MainWindow(const QUrl& url)
 
   setupUi();
   m_webview->load(url);
+
+  // Enable web inspector
+  m_webview->page()->settings()->setAttribute(
+    QWebSettings::DeveloperExtrasEnabled, true);
 }
 
 void

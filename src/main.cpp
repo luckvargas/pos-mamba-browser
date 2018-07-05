@@ -17,6 +17,7 @@
 #include "mainwindow.h"
 #include <QScreen>
 #include <QtGui>
+
 int
 main(int argc, char* argv[])
 {
@@ -37,6 +38,8 @@ main(int argc, char* argv[])
   }
 
   MainWindow* browser = new MainWindow(url);
+  //  QWebSettings::globalSettings()->setAttribute(
+  //    QWebSettings::DeveloperExtrasEnabled, true);
 
   QRect rec = QApplication::desktop()->screenGeometry();
   if (rec.height() < browser->size().rheight()) {
