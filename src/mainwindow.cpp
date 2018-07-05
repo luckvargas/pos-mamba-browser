@@ -15,17 +15,20 @@
 */
 
 #include "mainwindow.h"
+#include <QLayout>
 #include <QtWebKit>
 
 MainWindow::MainWindow(const QUrl& url)
 {
-  m_webview = new QWebView(this);
-  m_webview->load(url);
 
-  connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
+  m_webview = new QWebView(this);
+
   connect(m_webview, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
+  connect(m_webview, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
+  connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
 
   setCentralWidget(m_webview);
+  m_webview->load(url);
 }
 
 void
