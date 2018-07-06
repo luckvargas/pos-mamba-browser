@@ -15,8 +15,10 @@
 */
 
 #include "mainwindow.h"
+#include <QFileDialog>
 #include <QLayout>
 #include <QLineEdit>
+#include <QPushButton>
 #include <QStatusBar>
 #include <QToolBar>
 #include <QtWebKit>
@@ -42,16 +44,20 @@ MainWindow::MainWindow(const QUrl& url)
 void
 MainWindow::setupUi()
 {
+  ///< ToolBar
   m_addressBar = new QLineEdit(this);
   m_addressBar->setSizePolicy(QSizePolicy::Expanding,
                               m_addressBar->sizePolicy().verticalPolicy());
   connect(m_addressBar, SIGNAL(returnPressed()), SLOT(changeLocation()));
 
+  QPushButton* m_buttonOpen = new QPushButton;
+  m_buttonOpen->setIcon(QIcon(":/icons/open_black_24dp_1x.png"));
+  connect(m_buttonOpen, SIGNAL(clicked()), SLOT(on_actionOpen_triggered()));
+
   QToolBar* toolBar = addToolBar(tr("Navigation"));
   toolBar->setMovable(false);
+  toolBar->addWidget(m_buttonOpen);
   toolBar->addWidget(m_addressBar);
-
-  qDebug() << m_webview->height();
 
   setCentralWidget(m_webview);
   m_webview->setFixedSize(defaultSize);
@@ -96,4 +102,15 @@ MainWindow::finishLoading(bool)
 {
   m_loadProgress = 100;
   adjustTitle();
+}
+
+void
+MainWindow::on_actionOpen_triggered()
+{
+  QString fileFullPath = QFileDialog::getOpenFileName(
+    this, tr("Open File"), "", tr("HTML Files (*.html)"));
+
+  if (fileFullPath.length() > 0) {
+    m_webview->load(fileFullPath);
+  }
 }

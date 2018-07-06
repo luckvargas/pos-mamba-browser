@@ -30,5 +30,8 @@ SOURCES += \
 HEADERS += \
         src/mainwindow.h
 
+RESOURCES += \
+        res/icons.qrc
+
 target.path = $$DESTDIR
 INSTALLS += target

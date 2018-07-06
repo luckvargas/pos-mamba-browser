@@ -20,6 +20,7 @@
 class QUrl;
 class QWebView;
 class QLineEdit;
+class QPushButton;
 
 static const QSize defaultSize = QSize(240, 300);
 
@@ -37,9 +38,13 @@ private slots:
   void changeLocation();
   void adjustLocation();
 
+  void on_actionOpen_triggered();
+
 private:
   void setupUi();
 
+  QPushButton* m_buttonDebug;
+  QPushButton* m_buttonOpenFile;
   QLineEdit* m_addressBar;
   QWebView* m_webview;
   int m_loadProgress;

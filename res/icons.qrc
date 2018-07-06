@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/debug_black_24dp_1x.png</file>
+        <file>icons/open_black_24dp_1x.png</file>
+    </qresource>
+</RCC>
