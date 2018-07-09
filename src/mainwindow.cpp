@@ -86,11 +86,6 @@ MainWindow::setupUi()
   toolBar->addWidget(m_buttonOpen);
   toolBar->addWidget(m_addressBar);
   toolBar->addWidget(m_buttonDebug);
-
-  //   m_webview->raise();
-  //   adjustSize();
-  //   setFixedSize(this->size());
-  // >>>>>>> Stashed changes
 }
 
 void
@@ -147,4 +142,5 @@ void
 MainWindow::on_actionDebug_triggered()
 {
   m_webinspector->setVisible(!m_webinspector->isVisible());
+  adjustSize();
 }

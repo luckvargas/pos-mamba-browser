@@ -32,7 +32,7 @@ HEADERS += \
 
 RESOURCES += \
         res/icons.qrc \
-    res/images.qrc
+        res/images.qrc
 
 target.path = $$DESTDIR
 INSTALLS += target
