@@ -17,10 +17,12 @@
 #include <QMainWindow>
 #include <QObject>
 
-class QUrl;
-class QWebView;
 class QLineEdit;
 class QPushButton;
+class QUrl;
+class QHBoxLayout;
+class QWebView;
+class QWebInspector;
 
 static const QSize defaultSize = QSize(240, 300);
 
@@ -39,6 +41,7 @@ private slots:
   void adjustLocation();
 
   void on_actionOpen_triggered();
+  void on_actionDebug_triggered();
 
 private:
   void setupUi();
@@ -47,5 +50,7 @@ private:
   QPushButton* m_buttonOpenFile;
   QLineEdit* m_addressBar;
   QWebView* m_webview;
+  QWebInspector* m_webinspector;
+  QHBoxLayout* m_layout;
   int m_loadProgress;
 };

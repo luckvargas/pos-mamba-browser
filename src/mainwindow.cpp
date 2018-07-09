@@ -19,50 +19,63 @@
 #include <QLayout>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSplitter>
 #include <QStatusBar>
 #include <QToolBar>
 #include <QtWebKit>
 
 MainWindow::MainWindow(const QUrl& url)
 {
-
-  m_webview = new QWebView(this);
+  setupUi();
 
   connect(m_webview, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
   connect(m_webview, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
 
-  setupUi();
   m_webview->load(url);
-
-  // Enable web inspector
-  m_webview->page()->settings()->setAttribute(
-    QWebSettings::DeveloperExtrasEnabled, true);
 }
 
 void
 MainWindow::setupUi()
 {
+  ///< Webview and web inspector
+  m_webview = new QWebView(this);
+  m_webview->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled,
+                                      true);
+  m_webinspector = new QWebInspector(this);
+  m_webinspector->setPage(m_webview->page());
+  m_webinspector->setVisible(false);
+
+  m_layout = new QHBoxLayout(this);
+  m_layout->addWidget(m_webview);
+  m_layout->addWidget(m_webinspector);
+
+  QWidget* centralWidget = new QWidget(this);
+  centralWidget->setLayout(m_layout);
+  setCentralWidget(centralWidget);
   ///< ToolBar
   m_addressBar = new QLineEdit(this);
   m_addressBar->setSizePolicy(QSizePolicy::Expanding,
                               m_addressBar->sizePolicy().verticalPolicy());
   connect(m_addressBar, SIGNAL(returnPressed()), SLOT(changeLocation()));
 
+  ///< Open html file button
   QPushButton* m_buttonOpen = new QPushButton;
   m_buttonOpen->setIcon(QIcon(":/icons/open_black_24dp_1x.png"));
   connect(m_buttonOpen, SIGNAL(clicked()), SLOT(on_actionOpen_triggered()));
 
+  ///< Show web inspector button
+  QPushButton* m_buttonDebug = new QPushButton;
+  m_buttonDebug->setIcon(QIcon(":/icons/debug_black_24dp_1x.png"));
+  connect(m_buttonDebug, SIGNAL(clicked()), SLOT(on_actionDebug_triggered()));
+
+  ///< Configure toolbar
   QToolBar* toolBar = addToolBar(tr("Navigation"));
   toolBar->setMovable(false);
   toolBar->addWidget(m_buttonOpen);
   toolBar->addWidget(m_addressBar);
-
-  setCentralWidget(m_webview);
-  m_webview->setFixedSize(defaultSize);
-  adjustSize();
-  setFixedSize(this->size());
+  toolBar->addWidget(m_buttonDebug);
 }
 
 void
@@ -113,4 +126,10 @@ MainWindow::on_actionOpen_triggered()
   if (fileFullPath.length() > 0) {
     m_webview->load(fileFullPath);
   }
+}
+
+void
+MainWindow::on_actionDebug_triggered()
+{
+  m_webinspector->setVisible(!m_webinspector->isVisible());
 }
