@@ -16,6 +16,7 @@
 
 #include "mainwindow.h"
 #include <QFileDialog>
+#include <QLabel>
 #include <QLayout>
 #include <QLineEdit>
 #include <QPushButton>
@@ -40,15 +41,24 @@ void
 MainWindow::setupUi()
 {
   ///< Webview and web inspector
-  m_webview = new QWebView(this);
+  QPixmap image(":/images/S920.png");
+  m_posFrame = new QLabel(this);
+  m_posFrame->setPixmap(image);
+  m_posFrame->setFixedSize(image.width(), image.height());
+
+  m_webview = new QWebView(m_posFrame);
+  m_webview->setStyleSheet("background-color: white");
   m_webview->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled,
                                       true);
+  m_webview->setFixedSize(defaultSize);
+  m_webview->move(50, 252);
+
   m_webinspector = new QWebInspector(this);
   m_webinspector->setPage(m_webview->page());
   m_webinspector->setVisible(false);
 
   m_layout = new QHBoxLayout(this);
-  m_layout->addWidget(m_webview);
+  m_layout->addWidget(m_posFrame);
   m_layout->addWidget(m_webinspector);
 
   QWidget* centralWidget = new QWidget(this);
@@ -76,6 +86,11 @@ MainWindow::setupUi()
   toolBar->addWidget(m_buttonOpen);
   toolBar->addWidget(m_addressBar);
   toolBar->addWidget(m_buttonDebug);
+
+  //   m_webview->raise();
+  //   adjustSize();
+  //   setFixedSize(this->size());
+  // >>>>>>> Stashed changes
 }
 
 void
