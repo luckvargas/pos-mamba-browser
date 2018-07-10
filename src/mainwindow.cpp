@@ -99,8 +99,9 @@ MainWindow::setupUi()
   QToolBar* toolBar = addToolBar(tr("Navigation"));
   toolBar->setMovable(false);
   toolBar->addWidget(m_buttonOpen);
-  toolBar->addWidget(m_addressBar);
   toolBar->addWidget(m_buttonDebug);
+  toolBar->addWidget(m_addressBar);
+  toolBar->addAction(m_webview->pageAction(QWebPage::Reload));
   toolBar->installEventFilter(this);
 }
 
