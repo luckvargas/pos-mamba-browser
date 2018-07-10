@@ -113,6 +113,9 @@ MainWindow::changeLocation()
   QUrl url = QUrl::fromUserInput(m_addressBar->text());
   m_webview->load(url);
   m_webview->setFocus();
+
+  QSettings setting;
+  setting.setValue("currentUrl", m_webview->url().toString());
 }
 
 void
@@ -153,7 +156,6 @@ MainWindow::saveSettings()
 
   setting.setValue("positionBrowser", this->geometry());
   setting.setValue("inspectorVisibility", m_webInspectorVisibility);
-  setting.setValue("currentUrl", m_webview->url().toString());
 }
 
 void
@@ -167,7 +169,8 @@ MainWindow::loadSettings()
   }
 
   if (setting.contains("inspectorVisibility")) {
-    m_webInspector->setVisible(setting.value("inspectorVisibility").toBool());
+    m_webInspectorVisibility = setting.value("inspectorVisibility").toBool();
+    m_webInspector->setVisible(m_webInspectorVisibility);
   }
 
   if (setting.contains("currentUrl")) {
