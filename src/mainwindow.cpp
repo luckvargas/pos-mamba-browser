@@ -28,24 +28,21 @@
 #include <QToolBar>
 #include <QtWebKit>
 
-MainWindow::MainWindow(const QUrl& url)
+MainWindow::MainWindow()
 {
   setupUi();
+  loadSettings();
+
+  ///< Connect signals and slots
+  connect(QApplication::instance(),
+          SIGNAL(aboutToQuit()),
+          this,
+          SLOT(saveSettings()));
 
   connect(m_webview, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
   connect(m_webview, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
-
-  m_webview->load(url);
-  m_webview->installEventFilter(this);
-
-  ///< Settings
-  loadSettings();
-  connect(QApplication::instance(),
-          SIGNAL(aboutToQuit()),
-          this,
-          SLOT(saveSettings()));
 }
 
 void
@@ -67,6 +64,7 @@ MainWindow::setupUi()
                                                      Qt::ScrollBarAlwaysOff);
   m_webview->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal,
                                                      Qt::ScrollBarAlwaysOff);
+  m_webview->installEventFilter(this);
 
   m_webInspector = new QWebInspector(this);
   m_webInspector->setMinimumWidth(image.width() * 2);
@@ -172,13 +170,15 @@ MainWindow::loadSettings()
     m_webInspector->setVisible(m_webInspectorVisibility);
   }
 
-  if (setting.contains("currentUrl")) {
-    m_webview->load(setting.value("currentUrl").toString());
-  }
-
   if (QCoreApplication::arguments().size() > 1) {
-    if (QFile::exists(QCoreApplication::arguments().at(1))) {
-      m_webview->load(QCoreApplication::arguments().at(1));
+    QUrl url = QUrl::fromUserInput(QCoreApplication::arguments().at(1));
+    m_webview->load(url);
+  } else if (setting.contains("currentUrl")) {
+    m_webview->load(setting.value("currentUrl").toString());
+  } else {
+    QFile file(":/htmls/welcome.html");
+    if (file.open(QIODevice::ReadOnly)) {
+      m_webview->setHtml(file.readAll());
     }
   }
 }

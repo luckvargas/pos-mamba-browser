@@ -32,15 +32,7 @@ main(int argc, char* argv[])
   app.setOrganizationName("Stone Payments S.A.");
   app.setOrganizationDomain("stone.com.br");
 
-  // Setup initialization url
-  QUrl url;
-  if (argc > 1) {
-    url = QUrl(argv[1]);
-  } else {
-    url = QUrl("http://www.stone.com.br/");
-  }
-
-  MainWindow* browser = new MainWindow(url);
+  MainWindow* browser = new MainWindow();
 
   QRect rec = QApplication::desktop()->screenGeometry();
   if (rec.height() < browser->size().rheight()) {

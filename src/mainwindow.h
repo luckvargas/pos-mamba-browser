@@ -34,7 +34,7 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  MainWindow(const QUrl& url);
+  MainWindow();
 
 private slots:
   void setProgress(int p);
