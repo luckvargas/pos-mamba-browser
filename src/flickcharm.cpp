@@ -109,10 +109,10 @@ struct FlickData
           const int max = 4000; // px by seconds
           const int oldSpeedY = speed.y();
           const int oldSpeedX = speed.x();
-          if ((oldSpeedY <= 0 && newSpeedY <= 0) ||
-              (oldSpeedY >= 0 && newSpeedY >= 0) &&
-                (oldSpeedX <= 0 && newSpeedX <= 0) ||
-              (oldSpeedX >= 0 && newSpeedX >= 0)) {
+          if (((oldSpeedY <= 0 && newSpeedY <= 0) ||
+               (oldSpeedY >= 0 && newSpeedY >= 0)) &&
+              ((oldSpeedX <= 0 && newSpeedX <= 0) ||
+               (oldSpeedX >= 0 && newSpeedX >= 0))) {
             speed.setY(qBound(-max, (oldSpeedY + (newSpeedY / 4)), max));
             speed.setX(qBound(-max, (oldSpeedX + (newSpeedX / 4)), max));
           } else {
@@ -308,15 +308,12 @@ FlickCharm::eventFilter(QObject* object, QEvent* event)
     return false;
 
   const QPoint mousePos = mouseEvent->pos();
-  bool consumed = false;
   switch (data->state) {
 
     case FlickData::Steady:
       if (type == QEvent::MouseButtonPress) {
-        consumed = true;
         data->pressPos = mousePos;
       } else if (type == QEvent::MouseButtonRelease) {
-        consumed = true;
         QMouseEvent* event1 = new QMouseEvent(QEvent::MouseButtonPress,
                                               data->pressPos,
                                               Qt::LeftButton,
@@ -333,7 +330,6 @@ FlickCharm::eventFilter(QObject* object, QEvent* event)
         QApplication::postEvent(object, event1);
         QApplication::postEvent(object, event2);
       } else if (type == QEvent::MouseMove) {
-        consumed = true;
         data->scrollTo(mousePos);
 
         const QPoint delta = mousePos - data->pressPos;
@@ -345,10 +341,8 @@ FlickCharm::eventFilter(QObject* object, QEvent* event)
 
     case FlickData::ManualScroll:
       if (type == QEvent::MouseMove) {
-        consumed = true;
         data->scrollTo(mousePos);
       } else if (type == QEvent::MouseButtonRelease) {
-        consumed = true;
         data->state = FlickData::AutoScroll;
         data->lastPosValid = false;
         d->startTicker(this);
@@ -357,14 +351,12 @@ FlickCharm::eventFilter(QObject* object, QEvent* event)
 
     case FlickData::AutoScroll:
       if (type == QEvent::MouseButtonPress) {
-        consumed = true;
         data->state = FlickData::AutoScrollAcceleration;
         data->waitingAcceleration = true;
         data->accelerationTimer.start();
         data->updateSpeed(mousePos);
         data->pressPos = mousePos;
       } else if (type == QEvent::MouseButtonRelease) {
-        consumed = true;
         data->state = FlickData::Steady;
         data->resetSpeed();
       }
@@ -372,13 +364,11 @@ FlickCharm::eventFilter(QObject* object, QEvent* event)
 
     case FlickData::AutoScrollAcceleration:
       if (type == QEvent::MouseMove) {
-        consumed = true;
         data->updateSpeed(mousePos);
         data->accelerationTimer.start();
         if (data->speed.isNull())
           data->state = FlickData::ManualScroll;
       } else if (type == QEvent::MouseButtonRelease) {
-        consumed = true;
         data->state = FlickData::AutoScroll;
         data->waitingAcceleration = false;
         data->lastPosValid = false;
