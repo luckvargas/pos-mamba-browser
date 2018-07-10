@@ -56,7 +56,7 @@ MainWindow::setupUi()
   m_posFrame->setFixedSize(image.width(), image.height());
 
   m_webview = new WebView(m_posFrame);
-  m_webview->setStyleSheet("background-color: white");
+  m_webview->setStyleSheet("QWebView {background-color: white }");
   m_webview->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled,
                                       true);
   m_webview->setFixedSize(defaultSize);

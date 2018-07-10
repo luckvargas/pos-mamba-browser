@@ -2,7 +2,6 @@
 #include "flickcharm.h"
 #include <QApplication>
 #include <QMouseEvent>
-#include <QtDebug>
 
 WebView::WebView(QWidget* parent)
   : QWebView(parent)
