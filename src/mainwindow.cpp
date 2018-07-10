@@ -30,6 +30,7 @@
 #include <QtWebKit>
 
 MainWindow::MainWindow()
+  : m_webInspectorVisibility(false)
 {
   setupUi();
   loadSettings();
