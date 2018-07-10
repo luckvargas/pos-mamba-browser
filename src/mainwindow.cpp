@@ -36,7 +36,6 @@ MainWindow::MainWindow(const QUrl& url)
   connect(m_webview, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
-  connect(m_webview, SIGNAL(loadFinished(bool)), SLOT());
 
   m_webview->load(url);
   m_webview->installEventFilter(this);
@@ -74,7 +73,7 @@ MainWindow::setupUi()
   m_webInspector->setPage(m_webview->page());
   m_webInspector->setVisible(false);
 
-  m_layout = new QHBoxLayout(this);
+  m_layout = new QHBoxLayout();
   m_layout->addWidget(m_posFrame);
   m_layout->addWidget(m_webInspector);
 
