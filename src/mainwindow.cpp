@@ -17,6 +17,7 @@
 #include "mainwindow.h"
 #include "flickcharm.h"
 #include "webview.h"
+#include <QAction>
 #include <QApplication>
 #include <QFileDialog>
 #include <QLabel>
@@ -34,15 +35,15 @@ MainWindow::MainWindow()
   loadSettings();
 
   ///< Connect signals and slots
-  connect(QApplication::instance(),
-          SIGNAL(aboutToQuit()),
-          this,
-          SLOT(saveSettings()));
-
   connect(m_webview, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
   connect(m_webview, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
+
+  connect(QApplication::instance(),
+          SIGNAL(aboutToQuit()),
+          this,
+          SLOT(saveSettings()));
 }
 
 void
@@ -64,7 +65,6 @@ MainWindow::setupUi()
                                                      Qt::ScrollBarAlwaysOff);
   m_webview->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal,
                                                      Qt::ScrollBarAlwaysOff);
-  m_webview->installEventFilter(this);
 
   m_webInspector = new QWebInspector(this);
   m_webInspector->setMinimumWidth(image.width() * 2);
@@ -102,6 +102,18 @@ MainWindow::setupUi()
   toolBar->addWidget(m_buttonDebug);
   toolBar->addWidget(m_addressBar);
   toolBar->addAction(m_webview->pageAction(QWebPage::Reload));
+
+  ///< Tooltips and shortcuts
+  m_buttonOpen->setToolTip("Open File (Ctrl+O)");
+  m_buttonDebug->setToolTip("Developer Tools (F12)");
+  m_webview->pageAction(QWebPage::Reload)->setToolTip("Reload this page (F5)");
+
+  m_buttonOpen->setShortcut(Qt::CTRL | Qt::Key_O);
+  m_buttonDebug->setShortcut(Qt::Key_F12);
+  m_webview->pageAction(QWebPage::Reload)->setShortcut(Qt::Key_F5);
+
+  ///< Event fillter
+  m_webview->installEventFilter(this);
   toolBar->installEventFilter(this);
 }
 
