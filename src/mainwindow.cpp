@@ -184,7 +184,6 @@ MainWindow::loadSettings()
   }
 
   if (QCoreApplication::arguments().size() > 1) {
-    qDebug() << "TEM ARGUMENTOS!!!!";
     QUrl url = QUrl::fromUserInput(QCoreApplication::arguments().at(1));
     m_webview->load(url);
   } else if (setting.contains("currentUrl")) {
