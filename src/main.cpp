@@ -28,6 +28,9 @@ main(int argc, char* argv[])
   }
 
   QApplication app(argc, argv);
+  app.setApplicationName("MambaWebBrowser");
+  app.setOrganizationName("Stone Payments S.A.");
+  app.setOrganizationDomain("stone.com.br");
 
   // Setup initialization url
   QUrl url;
@@ -49,6 +52,9 @@ main(int argc, char* argv[])
     // desktop
     browser->show();
   }
+
+  ///< Application properties
+  browser->setWindowIcon(QIcon(":/icon.png"));
 
   return app.exec();
 }
