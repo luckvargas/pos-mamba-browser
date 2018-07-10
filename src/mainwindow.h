@@ -46,6 +46,9 @@ private slots:
   void on_actionOpen_triggered();
   void on_actionDebug_triggered();
 
+protected:
+  virtual bool eventFilter(QObject* object, QEvent* event);
+
 private:
   void setupUi();
 

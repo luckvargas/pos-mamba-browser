@@ -38,6 +38,8 @@ MainWindow::MainWindow(const QUrl& url)
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
 
   m_webview->load(url);
+
+  m_webview->installEventFilter(this);
 }
 
 void
@@ -71,6 +73,7 @@ MainWindow::setupUi()
   QWidget* centralWidget = new QWidget(this);
   centralWidget->setLayout(m_layout);
   setCentralWidget(centralWidget);
+
   ///< ToolBar
   m_addressBar = new QLineEdit(this);
   m_addressBar->setSizePolicy(QSizePolicy::Expanding,
@@ -93,6 +96,7 @@ MainWindow::setupUi()
   toolBar->addWidget(m_buttonOpen);
   toolBar->addWidget(m_addressBar);
   toolBar->addWidget(m_buttonDebug);
+  toolBar->installEventFilter(this);
 }
 
 void
@@ -150,4 +154,13 @@ MainWindow::on_actionDebug_triggered()
 {
   m_webinspector->setVisible(!m_webinspector->isVisible());
   adjustSize();
+}
+
+bool
+MainWindow::eventFilter(QObject* object, QEvent* event)
+{
+  if (event->type() == QEvent::ContextMenu) {
+    return true;
+  }
+  return QObject::eventFilter(object, event);
 }
