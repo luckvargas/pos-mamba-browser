@@ -25,10 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         src/main.cpp \
-        src/mainwindow.cpp
+        src/mainwindow.cpp \
+        src/flickcharm.cpp \
+        src/webview.cpp
 
 HEADERS += \
-        src/mainwindow.h
+        src/mainwindow.h \
+        src/flickcharm.h \
+        src/webview.h
 
 RESOURCES += \
         res/icons.qrc \

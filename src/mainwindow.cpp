@@ -15,6 +15,9 @@
 */
 
 #include "mainwindow.h"
+#include "flickcharm.h"
+#include "webview.h"
+#include <QApplication>
 #include <QFileDialog>
 #include <QLabel>
 #include <QLayout>
@@ -46,12 +49,16 @@ MainWindow::setupUi()
   m_posFrame->setPixmap(image);
   m_posFrame->setFixedSize(image.width(), image.height());
 
-  m_webview = new QWebView(m_posFrame);
+  m_webview = new WebView(m_posFrame);
   m_webview->setStyleSheet("background-color: white");
   m_webview->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled,
                                       true);
   m_webview->setFixedSize(defaultSize);
   m_webview->move(50, 252);
+  m_webview->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical,
+                                                     Qt::ScrollBarAlwaysOff);
+  m_webview->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal,
+                                                     Qt::ScrollBarAlwaysOff);
 
   m_webinspector = new QWebInspector(this);
   m_webinspector->setPage(m_webview->page());

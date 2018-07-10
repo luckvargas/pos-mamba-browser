@@ -21,10 +21,11 @@ class QLineEdit;
 class QPushButton;
 class QUrl;
 class QHBoxLayout;
-class QWebView;
 class QWebInspector;
 class QLineEdit;
 class QLabel;
+
+class WebView;
 
 const QSize defaultSize = QSize(240, 300);
 
@@ -52,7 +53,7 @@ private:
   QPushButton* m_buttonOpenFile;
   QLabel* m_posFrame;
   QLineEdit* m_addressBar;
-  QWebView* m_webview;
+  WebView* m_webview;
   QWebInspector* m_webinspector;
   QHBoxLayout* m_layout;
 
