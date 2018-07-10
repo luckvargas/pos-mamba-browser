@@ -70,6 +70,7 @@ MainWindow::setupUi()
                                                      Qt::ScrollBarAlwaysOff);
 
   m_webInspector = new QWebInspector(this);
+  m_webInspector->setMinimumWidth(image.width() * 2);
   m_webInspector->setPage(m_webview->page());
   m_webInspector->setVisible(false);
 
@@ -196,7 +197,6 @@ MainWindow::on_actionDebug_triggered()
 {
   m_webInspectorVisibility = !m_webInspector->isVisible();
   m_webInspector->setVisible(m_webInspectorVisibility);
-  adjustSize();
 }
 
 bool
