@@ -125,7 +125,7 @@ MainWindow::changeLocation()
   m_webview->setFocus();
 
   QSettings setting;
-  setting.setValue("currentUrl", m_webview->url().toString());
+  setting.setValue("currentUrl", url);
 }
 
 void
@@ -184,10 +184,12 @@ MainWindow::loadSettings()
   }
 
   if (QCoreApplication::arguments().size() > 1) {
+    qDebug() << "TEM ARGUMENTOS!!!!";
     QUrl url = QUrl::fromUserInput(QCoreApplication::arguments().at(1));
     m_webview->load(url);
   } else if (setting.contains("currentUrl")) {
-    m_webview->load(setting.value("currentUrl").toString());
+    QUrl url(setting.value("currentUrl").toString());
+    m_webview->load(url);
   } else {
     QFile file(":/htmls/welcome.html");
     if (file.open(QIODevice::ReadOnly)) {
