@@ -42,6 +42,8 @@ private slots:
   void adjustTitle();
   void changeLocation();
   void adjustLocation();
+  void saveSettings();
+  void loadSettings();
 
   void on_actionOpen_triggered();
   void on_actionDebug_triggered();
@@ -57,8 +59,9 @@ private:
   QLabel* m_posFrame;
   QLineEdit* m_addressBar;
   WebView* m_webview;
-  QWebInspector* m_webinspector;
+  QWebInspector* m_webInspector;
   QHBoxLayout* m_layout;
 
+  bool m_webInspectorVisibility;
   int m_loadProgress;
 };

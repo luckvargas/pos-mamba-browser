@@ -36,10 +36,17 @@ MainWindow::MainWindow(const QUrl& url)
   connect(m_webview, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
   connect(m_webview, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
+  connect(m_webview, SIGNAL(loadFinished(bool)), SLOT());
 
   m_webview->load(url);
-
   m_webview->installEventFilter(this);
+
+  ///< Settings
+  loadSettings();
+  connect(QApplication::instance(),
+          SIGNAL(aboutToQuit()),
+          this,
+          SLOT(saveSettings()));
 }
 
 void
@@ -62,13 +69,13 @@ MainWindow::setupUi()
   m_webview->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal,
                                                      Qt::ScrollBarAlwaysOff);
 
-  m_webinspector = new QWebInspector(this);
-  m_webinspector->setPage(m_webview->page());
-  m_webinspector->setVisible(false);
+  m_webInspector = new QWebInspector(this);
+  m_webInspector->setPage(m_webview->page());
+  m_webInspector->setVisible(false);
 
   m_layout = new QHBoxLayout(this);
   m_layout->addWidget(m_posFrame);
-  m_layout->addWidget(m_webinspector);
+  m_layout->addWidget(m_webInspector);
 
   QWidget* centralWidget = new QWidget(this);
   centralWidget->setLayout(m_layout);
@@ -139,6 +146,41 @@ MainWindow::finishLoading(bool)
 }
 
 void
+MainWindow::saveSettings()
+{
+  QSettings setting;
+
+  setting.setValue("positionBrowser", this->geometry());
+  setting.setValue("inspectorVisibility", m_webInspectorVisibility);
+  setting.setValue("currentUrl", m_webview->url().toString());
+}
+
+void
+MainWindow::loadSettings()
+{
+  QSettings setting;
+
+  if (setting.contains("positionBrowser")) {
+    QRect rectBrowser = setting.value("positionBrowser").toRect();
+    setGeometry(rectBrowser);
+  }
+
+  if (setting.contains("inspectorVisibility")) {
+    m_webInspector->setVisible(setting.value("inspectorVisibility").toBool());
+  }
+
+  if (setting.contains("currentUrl")) {
+    m_webview->load(setting.value("currentUrl").toString());
+  }
+
+  if (QCoreApplication::arguments().size() > 1) {
+    if (QFile::exists(QCoreApplication::arguments().at(1))) {
+      m_webview->load(QCoreApplication::arguments().at(1));
+    }
+  }
+}
+
+void
 MainWindow::on_actionOpen_triggered()
 {
   QString fileFullPath = QFileDialog::getOpenFileName(
@@ -152,7 +194,8 @@ MainWindow::on_actionOpen_triggered()
 void
 MainWindow::on_actionDebug_triggered()
 {
-  m_webinspector->setVisible(!m_webinspector->isVisible());
+  m_webInspectorVisibility = !m_webInspector->isVisible();
+  m_webInspector->setVisible(m_webInspectorVisibility);
   adjustSize();
 }
 
