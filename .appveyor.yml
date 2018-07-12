@@ -34,16 +34,11 @@ install:
   - 7z x MinGW.zip > nul
   - set "PATH=%cd%\MinGW\bin;%PATH%"
   - set make="mingw32-make.exe"
-  - mingw32-make -v
-  - g++ -v
 
   # OPEN SSL
   - curl https://www.dropbox.com/s/autuq39yr1s0ufi/OpenSSL101c.zip?dl=0 -O -J -L
   - 7z x OpenSSL101c.zip > nul
-  - dir 
   - move OpenSSL C:\
-  - dir C:\
-  - dir C:\OpenSSL
 
   # QT  
   - curl https://www.dropbox.com/s/wqzrgpvrwvboc29/qt487-mingw32.zip?dl=1 -O -J -L
@@ -56,7 +51,7 @@ before_build:
   # Prepare the out-of-source build directory.
   - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir %APPVEYOR_BUILD_FOLDER%-build
-  - qmake -spec win32-msvc2010 -o %APPVEYOR_BUILD_FOLDER%-build -r -Wall -Wlogic -Wparser CONFIG+=%CONFIGURATION% %APPVEYOR_BUILD_FOLDER%
+  - qmake -spec win32-g++-4.6 -o %APPVEYOR_BUILD_FOLDER%-build -r -Wall -Wlogic -Wparser CONFIG+=%CONFIGURATION% %APPVEYOR_BUILD_FOLDER%
   
 build_script:
   # Compile it and check for .exe
