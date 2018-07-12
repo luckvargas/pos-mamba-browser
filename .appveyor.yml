@@ -32,7 +32,8 @@ install:
   # Toolchain - MinGW
   - curl https://www.dropbox.com/s/2r03pyyuhuwn37m/MinGW.zip?dl=0 -O -J -L
   - 7z x MinGW.zip > nul
-  - set "PATH=%cd%\MinGW\bin;%PATH%"
+  - set "MINGWDIR=%cd%\MinGW"
+  - set "PATH=%MINGWDIR%\bin;%PATH%"
   - set make="mingw32-make.exe"
 
   # OPEN SSL
@@ -64,6 +65,7 @@ after_build:
   - dir /b /s *.exe
   - mkdir deploy
   - copy %APPVEYOR_BUILD_FOLDER%-build\%CONFIGURATION%\%BIN%.exe deploy\%BIN%.exe
+  - copy %MINGWDIR%\bin\libwinpthread-1.dll deploy\
   - copy %QTDIR%\bin\QtCore4.dll deploy\
   - copy %QTDIR%\bin\QtGui4.dll deploy\
   - copy %QTDIR%\bin\QtNetwork4.dll deploy\
