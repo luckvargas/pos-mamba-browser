@@ -10,8 +10,7 @@ init:
 environment:
   matrix:
     - arch: x86
-      compiler: msvc2010
-      backend: vs2010
+      compiler: mingw
 
 platform:
   - x64
@@ -29,14 +28,28 @@ install:
   - mkdir extern
   - cd extern
 
-  #setup environment
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" %arch%
-  - set make=nmake.exe
-  - IF NOT EXIST "C:\Qt\4.8.7" (curl https://www.dropbox.com/s/d01tdjhs59jg5ak/qt487_msvs2010.zip?dl=1 -O -J -L)
-  - IF NOT EXIST "C:\Qt\4.8.7" (7z x qt487_msvs2010.zip > nul)
-  - IF NOT EXIST "C:\Qt\4.8.7" (move Qt\4.8.7 C:\Qt\)
-  - cd C:\Qt\4.8.7
-  - set "QTDIR=%cd%"
+  ## setup environment
+  # Toolchain - MinGW
+  - curl https://www.dropbox.com/s/2r03pyyuhuwn37m/MinGW.zip?dl=0 -O -J -L
+  - 7z x MinGW.zip > nul
+  - set "PATH=%cd%\MinGW\bin;%PATH%"
+  - set make="mingw32-make.exe"
+  - mingw32-make -v
+  - g++ -v
+
+  # OPEN SSL
+  - curl https://www.dropbox.com/s/autuq39yr1s0ufi/OpenSSL101c.zip?dl=0 -O -J -L
+  - 7z x OpenSSL101c.zip > nul
+  - dir 
+  - move OpenSSL C:\
+  - dir C:\
+  - dir C:\OpenSSL
+
+  # QT  
+  - curl https://www.dropbox.com/s/wqzrgpvrwvboc29/qt487-mingw32.zip?dl=1 -O -J -L
+  - 7z x qt487-mingw32.zip > nul
+  - move Qt\4.8.7 C:\Qt\
+  - set "QTDIR=C:\Qt\4.8.7"
   - set "PATH=%QTDIR%\bin;%PATH%"
   
 before_build:
