@@ -15,22 +15,36 @@
 */
 
 #include "mainwindow.h"
+#include <QScreen>
 #include <QtGui>
 
 int
 main(int argc, char* argv[])
 {
-  QApplication app(argc, argv);
-  QUrl url;
-
-  if (argc > 1) {
-    url = QUrl(argv[1]);
-  } else {
-    url = QUrl("http://www.google.com/");
+  { // Environment variables to run on embedded linux
+    qputenv("QWS_MOUSE_PROTO", "linuxinput:/dev/input/event2");
+    qputenv("QWS_KEYBOARD", "linuxinput:/dev/input/event0");
+    qputenv("QWS_DISPLAY", "Transformed:Rot270:LinuxFb:/dev/graphics/fb0");
   }
 
-  MainWindow* browser = new MainWindow(url);
-  browser->show();
+  QApplication app(argc, argv);
+  app.setApplicationName("MambaWebBrowser");
+  app.setOrganizationName("Stone Payments S.A.");
+  app.setOrganizationDomain("stone.com.br");
+
+  MainWindow* browser = new MainWindow();
+
+  QRect rec = QApplication::desktop()->screenGeometry();
+  if (rec.height() < browser->size().rheight()) {
+    // embedded devices
+    browser->showFullScreen();
+  } else {
+    // desktop
+    browser->show();
+  }
+
+  ///< Application properties
+  browser->setWindowIcon(QIcon(":/icon.png"));
 
   return app.exec();
 }

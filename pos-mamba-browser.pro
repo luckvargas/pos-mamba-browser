@@ -25,10 +25,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         src/main.cpp \
-        src/mainwindow.cpp
+        src/mainwindow.cpp \
+        src/flickcharm.cpp \
+        src/webview.cpp
 
 HEADERS += \
-        src/mainwindow.h
+        src/mainwindow.h \
+        src/flickcharm.h \
+        src/webview.h
 
-FORMS += \
-        src/mainwindow.ui
+RESOURCES += \
+        res/icons.qrc \
+        res/images.qrc \
+    res/htmls.qrc
+
+target.path = $$DESTDIR
+INSTALLS += target

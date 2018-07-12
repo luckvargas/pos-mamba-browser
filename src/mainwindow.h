@@ -17,22 +17,51 @@
 #include <QMainWindow>
 #include <QObject>
 
+class QLineEdit;
+class QPushButton;
 class QUrl;
-class QWebView;
+class QHBoxLayout;
+class QWebInspector;
+class QLineEdit;
+class QLabel;
+
+class WebView;
+
+const QSize defaultSize = QSize(240, 300);
 
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  MainWindow(const QUrl& url);
+  MainWindow();
 
-protected slots:
+private slots:
   void setProgress(int p);
   void finishLoading(bool);
   void adjustTitle();
+  void changeLocation();
+  void adjustLocation();
+  void saveSettings();
+  void loadSettings();
+
+  void on_actionOpen_triggered();
+  void on_actionDebug_triggered();
+
+protected:
+  virtual bool eventFilter(QObject* object, QEvent* event);
 
 private:
-  QWebView* m_webview;
+  void setupUi();
+
+  QPushButton* m_buttonDebug;
+  QPushButton* m_buttonOpenFile;
+  QLabel* m_posFrame;
+  QLineEdit* m_addressBar;
+  WebView* m_webview;
+  QWebInspector* m_webInspector;
+  QHBoxLayout* m_layout;
+
+  bool m_webInspectorVisibility;
   int m_loadProgress;
 };
