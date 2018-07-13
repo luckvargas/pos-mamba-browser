@@ -24,6 +24,7 @@
 #include <QLayout>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSettings>
 #include <QSplitter>
 #include <QStatusBar>
 #include <QToolBar>
