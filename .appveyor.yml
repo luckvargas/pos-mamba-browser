@@ -1,4 +1,4 @@
-it version: '{branch}-{build}'
+version: '{branch}-{build}'
 
 os: Visual Studio 2015
 
