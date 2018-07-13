@@ -30,19 +30,19 @@ install:
 
   ## setup environment
   # Toolchain - MinGW
-  - curl https://www.dropbox.com/s/2r03pyyuhuwn37m/MinGW.zip?dl=0 -O -J -L
+  - curl https://www.dropbox.com/s/2r03pyyuhuwn37m/MinGW.zip?dl=1 -O -J -L
   - 7z x MinGW.zip > nul
   - set "MINGWDIR=%cd%\MinGW"
   - set "PATH=%MINGWDIR%\bin;%PATH%"
   - set make="mingw32-make.exe"
 
   # OPEN SSL
-  - curl https://www.dropbox.com/s/autuq39yr1s0ufi/OpenSSL101c.zip?dl=0 -O -J -L
+  - curl https://www.dropbox.com/s/cvczidpjg39nz3v/OpenSSL101c.zip?dl=1 -O -J -L
   - 7z x OpenSSL101c.zip > nul
   - move OpenSSL C:\
 
   # QT  
-  - curl https://www.dropbox.com/s/wqzrgpvrwvboc29/qt487-mingw32.zip?dl=1 -O -J -L
+  - curl https://www.dropbox.com/s/rennfrbuq2rdpjh/qt487-mingw32.zip?dl=1 -O -J -L
   - 7z x qt487-mingw32.zip > nul
   - move Qt\4.8.7 C:\Qt\
   - set "QTDIR=C:\Qt\4.8.7"
