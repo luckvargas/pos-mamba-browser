@@ -69,8 +69,8 @@ after_build:
   - copy %OPENSSLDIR%\bin\libeay32.dll deploy\
   - copy %OPENSSLDIR%\bin\ssleay32.dll deploy\
   - copy %MINGWDIR%\bin\libgcc_s_dw2-1.dll deploy\
-  - copy %MINGWDIR%\bin\libstdc++-6.dll deploy\
-  - copy %MINGWDIR%\bin\libwinpthread-1.dll deploy\
+  - copy "%MINGWDIR%\bin\libstdc++-6.dll" deploy\
+  - copy "%MINGWDIR%\bin\libwinpthread-1.dll" deploy\
   - copy %QTDIR%\bin\QtCore4.dll deploy\
   - copy %QTDIR%\bin\QtGui4.dll deploy\
   - copy %QTDIR%\bin\QtNetwork4.dll deploy\
