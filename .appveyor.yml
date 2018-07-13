@@ -40,6 +40,7 @@ install:
   - curl https://www.dropbox.com/s/cvczidpjg39nz3v/OpenSSL101c.zip?dl=1 -O -J -L
   - 7z x OpenSSL101c.zip > nul
   - move OpenSSL C:\
+  - set "OPENSSLDIR=C:\OpenSSL"
 
   # QT  
   - curl https://www.dropbox.com/s/rennfrbuq2rdpjh/qt487-mingw32.zip?dl=1 -O -J -L
@@ -65,6 +66,10 @@ after_build:
   - dir /b /s *.exe
   - mkdir deploy
   - copy %APPVEYOR_BUILD_FOLDER%-build\%CONFIGURATION%\%BIN%.exe deploy\%BIN%.exe
+  - copy %OPENSSLDIR%\bin\libeay32.dll deploy\
+  - copy %OPENSSLDIR%\bin\ssleay32.dll deploy\
+  - copy %MINGWDIR%\bin\libgcc_s_dw2-1.dll deploy\
+  - copy %MINGWDIR%\bin\libstdc++-6.dll deploy\
   - copy %MINGWDIR%\bin\libwinpthread-1.dll deploy\
   - copy %QTDIR%\bin\QtCore4.dll deploy\
   - copy %QTDIR%\bin\QtGui4.dll deploy\
