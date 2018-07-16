@@ -17,6 +17,7 @@
 #include "mainwindow.h"
 #include <QScreen>
 #include <QtGui>
+#include <QtDebug>
 
 int
 main(int argc, char* argv[])
@@ -32,6 +33,7 @@ main(int argc, char* argv[])
   app.setOrganizationName("Stone Payments S.A.");
   app.setOrganizationDomain("stone.com.br");
 
+  qDebug() << "Hello from browser";
   MainWindow* browser = new MainWindow();
 
   QRect rec = QApplication::desktop()->screenGeometry();
