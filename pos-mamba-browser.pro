@@ -39,5 +39,6 @@ RESOURCES += \
         res/images.qrc \
     res/htmls.qrc
 
-target.path = $$DESTDIR
+# Default rules for deployment.
+target.path = /opt/$${TARGET}/bin
 INSTALLS += target
