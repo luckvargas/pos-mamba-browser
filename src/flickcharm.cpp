@@ -329,7 +329,6 @@ FlickCharm::eventFilter(QObject* object, QEvent* event)
         data->ignored << event2;
         QApplication::postEvent(object, event1);
         QApplication::postEvent(object, event2);
-        return false;
       } else if (type == QEvent::MouseMove) {
         data->scrollTo(mousePos);
 
