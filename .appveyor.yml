@@ -44,8 +44,8 @@ install:
   # QT  
   - curl https://www.dropbox.com/s/rennfrbuq2rdpjh/qt487-mingw32.zip?dl=1 -O -J -L
   - 7z x qt487-mingw32.zip > nul
-  - move Qt\4.8.7 C:\Qt\
-  - set "QTDIR=C:\Qt\4.8.7"
+  - set "QTDIR=%cd%\Qt\4.8.7"
+  - dir %QTDIR%
   - set "PATH=%QTDIR%\bin;%PATH%"
   
 before_build:

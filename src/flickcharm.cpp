@@ -378,7 +378,7 @@ FlickCharm::eventFilter(QObject* object, QEvent* event)
       break;
   }
   data->lastPos = mousePos;
-  return false;
+  return true;
 }
 
 void
