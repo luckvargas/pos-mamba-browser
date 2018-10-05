@@ -51,29 +51,23 @@ void
 MainWindow::setupUi()
 {
   ///< Webview and web inspector
-  QPixmap image(":/images/S920.png");
-  m_posFrame = new QLabel(this);
-  m_posFrame->setPixmap(image);
-  m_posFrame->setFixedSize(image.width(), image.height());
-
-  m_webview = new WebView(m_posFrame);
+  m_webview = new WebView(this);
   m_webview->setStyleSheet("QWebView {background-color: white }");
   m_webview->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled,
                                       true);
   m_webview->setFixedSize(defaultSize);
-  m_webview->move(50, 252);
   m_webview->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical,
                                                      Qt::ScrollBarAlwaysOff);
   m_webview->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal,
                                                      Qt::ScrollBarAlwaysOff);
 
   m_webInspector = new QWebInspector(this);
-  m_webInspector->setMinimumWidth(image.width() * 2);
+  m_webInspector->setMinimumWidth(this->width() * 2);
   m_webInspector->setPage(m_webview->page());
   m_webInspector->setVisible(false);
 
   m_layout = new QHBoxLayout();
-  m_layout->addWidget(m_posFrame);
+  m_layout->addWidget(m_webview);
   m_layout->addWidget(m_webInspector);
 
   QWidget* centralWidget = new QWidget(this);
@@ -114,7 +108,6 @@ MainWindow::setupUi()
   m_webview->pageAction(QWebPage::Reload)->setShortcut(Qt::Key_F5);
 
   ///< Event fillter
-  m_webview->installEventFilter(this);
   toolBar->installEventFilter(this);
 }
 

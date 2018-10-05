@@ -56,7 +56,6 @@ private:
 
   QPushButton* m_buttonDebug;
   QPushButton* m_buttonOpenFile;
-  QLabel* m_posFrame;
   QLineEdit* m_addressBar;
   WebView* m_webview;
   QWebInspector* m_webInspector;
