@@ -55,6 +55,7 @@ MainWindow::setupUi()
   m_webview->setStyleSheet("QWebView {background-color: white }");
   m_webview->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled,
                                       true);
+  m_webview->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
   m_webview->setFixedSize(defaultSize);
   m_webview->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical,
                                                      Qt::ScrollBarAlwaysOff);
