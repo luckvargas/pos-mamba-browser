@@ -58,7 +58,7 @@ void MainWindow::setupUi()
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled,
         true);
     settings->setAttribute(QWebSettings::LocalStorageEnabled, true);
-    auto path = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+    QString path = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
     settings->setOfflineStoragePath(path);
     settings->enablePersistentStorage(path);
 
